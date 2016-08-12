@@ -5,6 +5,9 @@ const uuid = require('node-uuid');
 const Joi = require('joi');
 var status = require('hapi-status');
 
+var Company = require('../models/company-model');
+var companyValidation = require('../validations/company-validation');
+
 exports.register = function(server, options, next) {
 const db = server.app.db;
 //GET 
@@ -26,11 +29,7 @@ server.route({
     method:"POST",
     path:'/company',
     handler:function(request,reply){
-      //TODO: Create Model
-      //TODO: Create Object of Model
-      //TODO: Validate
-      //TODO: save
-      //TODO: return 201
+      var company = new Company(request.payload);
        db.companies.save(company,function(err, savedCompany){
             if(err){
                 console.log('error while saving company');
@@ -39,13 +38,7 @@ server.route({
             status.created(reply,savedCompany);
         });          
     },
-    config:{
-        validate:{
-            payload:{
-                companyName: Joi.string().max(50).required()
-            }
-        }
-    }
+    config:companyValidation
 });
 next();
 }
