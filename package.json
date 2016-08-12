@@ -1,0 +1,20 @@
+{
+  "name": "legal_entity_registration",
+  "version": "1.0.0",
+  "description": "A set of APIs to create companies,roles,users",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Srinidhi Raghavan",
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^3.2.2",
+    "hapi": "^14.1.0",
+    "hapi-status": "^2.1.0",
+    "joi": "^9.0.4",
+    "mongojs": "^2.4.0",
+    "mongojs-models": "^0.1.4",
+    "node-uuid": "^1.4.7"
+  }
+}
