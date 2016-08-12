@@ -9,6 +9,7 @@ var schema = new database.Schema({
   lastName: String,
   address: String,
   email : String,
+  password:String,
   username: String,
   companyName: String,
   role :String,            
@@ -17,7 +18,8 @@ var schema = new database.Schema({
   	pdfVersion:String,
   	date:Date
   },
-  accountActivated:Boolean
+  accountActivated:Boolean,
+  skipContract:Boolean
 });
  
 // Instantiate your Model class for the 'entites' collection 

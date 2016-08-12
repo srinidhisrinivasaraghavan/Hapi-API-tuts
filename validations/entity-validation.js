@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-module.exports = {
+module.exports.entityValidation = {
         validate:{
             payload:{
                 firstName: Joi.string().max(50).required(),
@@ -9,7 +9,16 @@ module.exports = {
                 email: Joi.string().email().required(),
                 username: Joi.string().max(50).required(),
                 companyName: Joi.required(),
-                role: Joi.required()
+                role: Joi.required(),
+                skipContract: Joi.required()
+            }
+        }
+    }
+
+module.exports.passwordValidation = {
+        validate:{
+            payload:{
+                password: Joi.string().max(50).required()
             }
         }
     }

@@ -4,9 +4,9 @@ var database = require('mongojs-models')(databaseConfig.url);
  
 // Define your schema 
 var schema = new database.Schema({
-  companyName:String
+  roleName:String
 });
  
 // Instantiate your Model class for the 'entites' collection 
-var Company = new database.Model('companies', schema);
-module.exports=Company;
+var Role = new database.Model('roles', schema);
+module.exports=Role;
