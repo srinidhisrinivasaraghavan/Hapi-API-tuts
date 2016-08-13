@@ -11,7 +11,8 @@ var rolePlugin = require('./routes/role-routes');
 const server = new Hapi.Server();  
 server.connection({  
 	host:'localhost',
-    port: 3000
+    port: 3000,
+    routes: { cors: true }
 });
 
 //Connect to database
