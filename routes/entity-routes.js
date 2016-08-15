@@ -32,8 +32,8 @@ server.route({
 //PATCH
 //update contract status on confirm
 server.route({  
-    method: 'PATCH',
-    path: '/entity/{id}/confirm',
+    method: 'GET',
+    path: '/entity/{id}/confirm/{token}',
     handler: handlers.handlePatchEntityConfirm
 });
 

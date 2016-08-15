@@ -63,7 +63,7 @@ module.exports.handlePatchEntitySendEmail =function (request, reply) {
     }
 
 module.exports.handlePatchEntityConfirm =function (request, reply) {
-
+     console.log(request.params.token);
      db.entities.findAndModify({
     	query: { _id: mongojs.ObjectId(request.params.id) },
     	update: { $set: { accountActivated: true,

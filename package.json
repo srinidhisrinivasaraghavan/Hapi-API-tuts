@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "boom": "^3.2.2",
+    "crypto": "0.0.3",
     "hapi": "^14.1.0",
     "hapi-status": "^2.1.0",
     "joi": "^9.0.4",
