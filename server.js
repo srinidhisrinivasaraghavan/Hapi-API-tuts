@@ -20,7 +20,7 @@ var Entity = require('./models/entity-model');
 //TODO: 5 Error if token is different or expired
 //TODO: 6 delete token if more than some time, TTL mongo
 //TODO: 7 resend email
-var nodemailer = require('nodemailer');
+/*var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -50,7 +50,7 @@ require('crypto').randomBytes(48, function(err, buffer) {
     };
 });
 
-});
+});*/
 
 
 

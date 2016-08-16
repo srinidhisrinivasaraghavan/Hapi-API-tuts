@@ -29,12 +29,20 @@ server.route({
     handler: handlers.handlePatchEntitySendEmail
 });
 
-//PATCH
+//GET
 //update contract status on confirm
 server.route({  
     method: 'GET',
     path: '/entity/{id}/confirm/{token}',
     handler: handlers.handlePatchEntityConfirm
+});
+
+//GET
+//update contract status on confirm
+server.route({  
+    method: 'GET',
+    path: '/entity/{id}/contractsigned',
+    handler: handlers.handleGetContractSigned
 });
 
 
@@ -47,8 +55,16 @@ server.route({
     config:validations.passwordValidation
 });
 
+server.route({  
+    method: 'GET',
+    path: '/entity/{id}',
+    handler: handlers.handleGetEntity
+});
+
 next();
 }
+
+
 
 exports.register.attributes = {  
   name: 'entity-routes'

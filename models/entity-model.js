@@ -16,10 +16,13 @@ var schema = new database.Schema({
   contract:{
   	status:String,
   	pdfVersion:String,
-  	date:Date
+  	dateSent:Date,
+    dateCreated:Date,
+    dateConfirmed:Date
   },
   accountActivated:Boolean,
-  skipContract:Boolean
+  skipContract:Boolean,
+  url:String
 });
  
 // Instantiate your Model class for the 'entites' collection 

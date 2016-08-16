@@ -10,7 +10,8 @@ module.exports.entityValidation = {
                 username: Joi.string().max(50).required(),
                 companyName: Joi.required(),
                 role: Joi.required(),
-                skipContract: Joi.required()
+                skipContract: Joi.required(),
+                url:Joi.string().required()
             }
         }
     }
