@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
         }
     });
 
-module.exports.sendConfirmationEmail =function(entityId, URL, email, token){
+module.exports.sendEmail =function(subject, body, email,entityId){
 require('crypto').randomBytes(48, function(err, buffer) {
     var token = buffer.toString('hex');
     var TOKEN = new Token();
@@ -23,12 +23,12 @@ require('crypto').randomBytes(48, function(err, buffer) {
                 console.log('error while saving Token');
             }
         });
-  var text = 'Please click on link to confirm account '+ URL +'/entity/'+entityId+'/confirm/'+token;//+'/entity/'+entityId+'/confirm/'+token;
+  //var text = 'Please click on link to confirm account '+ URL +'/entity/'+entityId+'/confirm/'+token;//+'/entity/'+entityId+'/confirm/'+token;
   var mailOptions = {
     from: 'srinidhiraghavan1993@gmail.com', // sender address
     to: email, // list of receivers
-    subject: 'Confirmation Email', // Subject line
-    text: text //, // plaintext body
+    subject: subject, // Subject line
+    text: body+token //, // plaintext body
     // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
     };
     transporter.sendMail(mailOptions, function(error, info){

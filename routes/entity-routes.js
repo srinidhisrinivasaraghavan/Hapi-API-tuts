@@ -45,6 +45,13 @@ server.route({
     handler: handlers.handleGetContractSigned
 });
 
+server.route({  
+    method: 'GET',
+    path: '/entity/{id}/password/{token}',
+    handler: handlers.handleGetPassword
+});
+
+
 
 //PATCH
 //update entity on password creation
@@ -59,6 +66,12 @@ server.route({
     method: 'GET',
     path: '/entity/{id}',
     handler: handlers.handleGetEntity
+});
+
+server.route({  
+    method: 'PATCH',
+    path: '/entity/edit/{id}',
+    handler: handlers.handlePutEntity
 });
 
 next();
