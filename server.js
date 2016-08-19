@@ -1,38 +1,29 @@
 'use strict';
 const Hapi = require('hapi');
-const mongojs = require('mongojs');
-var Inert = require('inert');
-var Vision = require('vision');
-var Handlebars = require('handlebars');
+const Inert = require('inert');
+const Vision = require('vision');
+const Handlebars = require('handlebars');
+const HapiSwagger = require('hapi-swagger');
 
-var databaseConfig = require('./config/db');
-var entityPlugin = require('./routes/entity-routes');
-var companyPlugin = require('./routes/company-routes');
-var rolePlugin = require('./routes/role-routes');
-var Entity = require('./models/entity-model');
-
-
-/////////////////////////////////////////////////////////////////
-//2. Password reset link
-
-//TODO1. On validation user, call to send email with link,userId,token
-//TODO2. user clicks on link, password page and user resets password
-
-/////////////////////////////////////////////////
-
+const entityPlugin = require('./routes/entity-routes');
+const companyPlugin = require('./routes/company-routes');
+const rolePlugin = require('./routes/role-routes');
+const Entity = require('./models/entity-model');
+const config = require('./config/config');
 
 // Create a server with a host and port
 const server = new Hapi.Server();  
 server.connection({  
-	host:'localhost',
-    port: 3000,
+	host:config.server.host,
+    port: config.server.port,
     routes: { cors: true }
 });
 
-//Connect to database
-//var db = mongojs('mydb', ['mycollection']) //for localhost
-var collections = ['entities','companies','roles'];
-server.app.db= mongojs(databaseConfig.url, collections);
+const swaggerOptions = {
+    info: {
+            'title': 'Test API Documentation'
+        }
+    };
 
 //Load plugins and start server
 server.register([
@@ -50,7 +41,11 @@ server.register([
 	},
 	{
 		register:Vision
-	}
+	},
+	{
+        register: HapiSwagger,
+        options: swaggerOptions
+    }
 ],
 	 (err) => {
   		if (err) {

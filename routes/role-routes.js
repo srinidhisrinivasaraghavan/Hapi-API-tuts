@@ -9,7 +9,10 @@ exports.register = function(server, options, next) {
 server.route({  
     method: 'GET',
     path: '/roles',
-    handler: handlers.handleGetRoles
+    handler: handlers.handleGetRoles,
+    config:{
+    	tags:["api"]
+    }
 });
 
 //POST
@@ -18,7 +21,10 @@ server.route({
     method:"POST",
     path:'/role',
     handler:handlers.handlePostRoles,
-    config:roleValidation
+    config:{
+    	validate:roleValidation,
+    	tags:["api"]
+    }
 });
 next();
 }

@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
-module.exports.entityValidation = {
-        validate:{
+module.exports.entityValidationPOST = {
             payload:{
                 firstName: Joi.string().max(50).required(),
                 lastName: Joi.string().max(50).required(),
@@ -10,11 +9,22 @@ module.exports.entityValidation = {
                 username: Joi.string().max(50).required(),
                 companyName: Joi.required(),
                 role: Joi.required(),
-                skipContract: Joi.required(),
-                url:Joi.string().required()
+                skipContract: Joi.required()
             }
-        }
     }
+
+module.exports.entityValidationPUT = {
+            payload:{
+                firstName: Joi.string().max(50).required(),
+                lastName: Joi.string().max(50).required(),
+                address:  Joi.string().max(200).required(),    
+                email: Joi.string().email().required(),
+                username: Joi.string().max(50).required(),
+                companyName: Joi.required(),
+                role: Joi.required()
+            }
+    }
+
 
 module.exports.passwordValidation = {
         validate:{

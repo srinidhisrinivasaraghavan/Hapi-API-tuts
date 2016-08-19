@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 const databaseConfig = require('../config/db');
 const db= databaseConfig.db;
 
-var Token = require('../models/token-model');
+var Token = require('../models/token-model').Token;
 
 var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -18,7 +18,7 @@ require('crypto').randomBytes(48, function(err, buffer) {
     var TOKEN = new Token();
     TOKEN.entityId=entityId;
     TOKEN.tokenValue=token;
-    db.tokens.save(TOKEN,function(err, savedToken){
+    TOKEN.save(function(err, savedToken){
             if(err){
                 console.log('error while saving Token');
             }

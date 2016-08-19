@@ -10,7 +10,10 @@ const db = server.app.db;
 server.route({  
     method: 'GET',
     path: '/companies',
-    handler: handlers.handleGetCompanies
+    handler: handlers.handleGetCompanies,
+    config:{
+    	tags: ['api']
+    }
 });
 
 //POST
@@ -19,7 +22,10 @@ server.route({
     method:"POST",
     path:'/company',
     handler:handlers.handlePostCompanies,
-    config:companyValidation
+    config:{
+    	validate:companyValidation,
+    	tags: ['api']
+    }
 });
 next();
 }

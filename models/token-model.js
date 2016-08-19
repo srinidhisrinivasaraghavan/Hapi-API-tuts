@@ -1,13 +1,15 @@
 // Require libraries and initiate database connection 
-var databaseConfig= require('../config/db');
-var database = require('mongojs-models')(databaseConfig.url);
+var Mongoose = require('mongoose'),
+    Schema = Mongoose.Schema;
  
 // Define your schema 
-var schema = new database.Schema({
-  tokenValue:String,
-  entityId:String
+var tokenSchema = new Schema({
+  tokenValue:{ type: String,  required: true, unique: true },
+  entityId:{ type: String,  required: true, unique: true }
 });
  
 // Instantiate your Model class for the 'entites' collection 
-var Token = new database.Model('tokens', schema);
-module.exports=Token;
+var token =  Mongoose.model('tokens', tokenSchema);
+module.exports = {
+    Token: token
+};

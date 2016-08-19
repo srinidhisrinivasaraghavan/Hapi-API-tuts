@@ -1,12 +1,14 @@
 // Require libraries and initiate database connection 
-var databaseConfig= require('../config/db');
-var database = require('mongojs-models')(databaseConfig.url);
+var Mongoose = require('mongoose'),
+    Schema = Mongoose.Schema;
  
 // Define your schema 
-var schema = new database.Schema({
-  companyName:String
+var companySchema = Schema({
+  companyName:{ type: String,  required: true, unique: true }
 });
  
 // Instantiate your Model class for the 'entites' collection 
-var Company = new database.Model('companies', schema);
-module.exports=Company;
+var company = Mongoose.model('companies', companySchema);
+module.exports = {
+    Company: company
+};
