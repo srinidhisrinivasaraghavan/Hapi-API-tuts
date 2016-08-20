@@ -1,43 +1,62 @@
-var nodemailer = require('nodemailer');
-const databaseConfig = require('../config/db');
-const db= databaseConfig.db;
+const nodemailer = require('nodemailer');
+const emailConfig = require('../config/config').email;
+const crypto = require('crypto');
 
 var Token = require('../models/token-model').Token;
 
 var transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        service: emailConfig.service,
         auth: {
-            user: 'srinidhiraghavan1993@gmail.com', // Your email id
-            pass: 'shyampuff' // Your password
+            user: emailConfig.user, // Your email id
+            pass: emailConfig.password // Your password
         }
     });
 
 module.exports.sendEmail =function(subject, body, email,entityId){
-require('crypto').randomBytes(48, function(err, buffer) {
-    var token = buffer.toString('hex');
-    var TOKEN = new Token();
-    TOKEN.entityId=entityId;
-    TOKEN.tokenValue=token;
-    TOKEN.save(function(err, savedToken){
-            if(err){
-                console.log('error while saving Token');
+    crypto.randomBytes(48, function(err, buffer) {
+        var token = createTokenAndSave(buffer,entityId);
+        console.log('***************',token);
+
+        var mailOptions = {
+        from: emailConfig.user, // sender 
+        to: email, //  receivers
+        subject: subject, // Subject 
+        text: body + token //, // plaintext body
+        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('Message sent: ' + info.response);
             }
         });
-  //var text = 'Please click on link to confirm account '+ URL +'/entity/'+entityId+'/confirm/'+token;//+'/entity/'+entityId+'/confirm/'+token;
-  var mailOptions = {
-    from: 'srinidhiraghavan1993@gmail.com', // sender address
-    to: email, // list of receivers
-    subject: subject, // Subject line
-    text: body+token //, // plaintext body
-    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-    };
-    transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-    }else{
-        console.log('Message sent: ' + info.response);
-    };
-});
 
-});
+    });
+}
+
+function createTokenAndSave(buffer,entityId){
+    var tokenValue = buffer.toString('hex');
+    Token.findOne({"entityId":entityId},function(err,existingToken){
+        if(existingToken){
+            Token.remove({"entityId":entityId }, function(err) {
+                if (err) {
+                    console.log('error deleting tokens');
+                }
+            });
+        }
+        var TOKEN = new Token();
+        TOKEN.entityId=entityId;
+        TOKEN.tokenValue=tokenValue;
+        console.log(TOKEN);
+        TOKEN.save(TOKEN,function(err, savedToken){
+            if(err){
+                console.log('error while saving Token' ,err);
+            }
+        });
+        console.log('..........',tokenValue);
+          
+    });   
+    return tokenValue;  
 }

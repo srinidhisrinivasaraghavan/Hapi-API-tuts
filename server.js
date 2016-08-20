@@ -10,7 +10,7 @@ const companyPlugin = require('./routes/company-routes');
 const rolePlugin = require('./routes/role-routes');
 const Entity = require('./models/entity-model');
 const config = require('./config/config');
-
+const Db = require('./config/db');
 // Create a server with a host and port
 const server = new Hapi.Server();  
 server.connection({  
@@ -21,7 +21,7 @@ server.connection({
 
 const swaggerOptions = {
     info: {
-            'title': 'Test API Documentation'
+            'title': 'API Documentation'
         }
     };
 

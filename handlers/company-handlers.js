@@ -2,11 +2,12 @@ const status = require('hapi-status');
 const Boom = require('boom');
 const mongoose = require('mongoose');
 const Company = require('../models/company-model').Company;
+const companyDB = require('../data_access/company-db');
 
 module.exports.handleGetCompanies = function (request, reply) {
-    Company.find({},{'_schema':0, '_fields':0},(err, docs) => {
+    companyDB.findAll(function(err, docs){
         if (err) {
-            return reply(Boom.wrap(err, 'Internal MongoDB error'));
+            return reply(Boom.wrap(err));
         }
         status.ok(reply,docs);
     });
@@ -14,7 +15,7 @@ module.exports.handleGetCompanies = function (request, reply) {
 
 module.exports.handlePostCompanies =function(request,reply){
     var company = new Company(request.payload);
-    company.save(function(err, savedCompany){
+    companyDB.save(company,function(err, savedCompany){
         if(err){
             return reply (Boom.wrap(err,'Internal mongo error'));
         }

@@ -9,6 +9,9 @@ server.route({
     method: 'GET',
     path: '/entities',
     handler: entityHandlers.handleGetEntites,
+     config:{
+        tags:["api"]
+    }
 });
 
 //POST
@@ -88,6 +91,14 @@ server.route({
     path: '/entity/{id}/password',
     handler: entityHandlers.handlePatchEntityPassword,
     config:validations.passwordValidation
+});
+
+//GET
+//find if user with email exists
+server.route({
+    method: 'GET',
+    path :'/entity/{email}/exists',
+    handler: entityHandlers.handleGetIfEmailExists
 });
 next();
 }
