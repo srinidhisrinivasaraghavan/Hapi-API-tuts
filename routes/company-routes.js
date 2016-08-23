@@ -27,7 +27,16 @@ server.route({
     	tags: ['api']
     }
 });
+
+//GET
+//find if company with companyName exists
+server.route({
+    method: 'GET',
+    path :'/company/{companyName}/exists',
+    handler: handlers.handleGetIfCompanyExists
+});
 next();
+
 }
 
 exports.register.attributes = {  

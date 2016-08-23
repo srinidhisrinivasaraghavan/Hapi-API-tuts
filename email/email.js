@@ -15,7 +15,6 @@ var transporter = nodemailer.createTransport({
 module.exports.sendEmail =function(subject, body, email,entityId){
     crypto.randomBytes(48, function(err, buffer) {
         var token = createTokenAndSave(buffer,entityId);
-        console.log('***************',token);
 
         var mailOptions = {
         from: emailConfig.user, // sender 
@@ -49,13 +48,11 @@ function createTokenAndSave(buffer,entityId){
         var TOKEN = new Token();
         TOKEN.entityId=entityId;
         TOKEN.tokenValue=tokenValue;
-        console.log(TOKEN);
         TOKEN.save(TOKEN,function(err, savedToken){
             if(err){
                 console.log('error while saving Token' ,err);
             }
         });
-        console.log('..........',tokenValue);
           
     });   
     return tokenValue;  

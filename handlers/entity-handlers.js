@@ -7,12 +7,12 @@ const Contract= require('../models/entity-model').Contract;
 const Token= require('../models/token-model').Token;
 const CONTRACT_STATUS = require('../config/constants').CONTRACT_STATUS;
 const email = require('../email/email');
-const entityDB = require('../data_access/entity-db');
+const DB = require('../data_access/db');
 const tokenDB = require('../data_access/token-db');
 
 //Get all Entities 
 module.exports.handleGetEntites = function(request, reply) {
-    entityDB.findAll(function(err,docs){
+    DB.findAll(Entity, function(err,docs){
         if (err) {
             return reply(Boom.wrap(err));
         }
@@ -22,7 +22,7 @@ module.exports.handleGetEntites = function(request, reply) {
 //Create new Entity 
 module.exports.handlePostEntity = function(request, reply) {
     var entity = CreateNewEntity(request.payload)
-    entityDB.save(entity, function(err, savedEntity) {
+    DB.save(entity, function(err, savedEntity) {
         if (err) {
             return reply(Boom.wrap(err));
         }
@@ -31,17 +31,17 @@ module.exports.handlePostEntity = function(request, reply) {
 }
 //Get one Entity 
 module.exports.handleGetEntity = function(request, reply) {
-    entityDB.findOne(request.params.id, function(err, entity, code) {
+    DB.findOne(Entity, request.params.id, function(err, entity, code) {
         if(err){
             return reply(Boom.wrap(err, code, err.message));
         }
-        reply(entity);
+        status.ok(reply,entity);
     });
 }
 //Update an Entity
 module.exports.handlePutEntity =function(request,reply){
     var setObject=CreateUpdatedEntityObject(request);
-    entityDB.Update(request.params.id, setObject, function(err,savedEntity,code){
+    DB.Update(Entity, request.params.id, setObject, function(err,savedEntity,code){
         if (err) {
             return reply(Boom.wrap(err,code,err.message));
         }
@@ -51,28 +51,27 @@ module.exports.handlePutEntity =function(request,reply){
 //Update contract status on sending email
 module.exports.handlePatchEntitySendEmail = function(request, reply) {
     var setObject=CreateUpdatedSendEmailObject();
-    entityDB.Update(request.params.id, setObject, function(err,savedEntity,code){
+    DB.Update(Entity,request.params.id, setObject, function(err,savedEntity,code){
         if (err) {
             return reply(Boom.badRequest(err,code,err.message));
         }
         var text = 'Please click on link to confirm account  '+ 'http://localhost:3000' +'/entity/'+savedEntity._id+'/confirm/';
         email.sendEmail('Confirmation Email',text, savedEntity.contract.email, savedEntity._id);
-        reply(savedEntity);
+        status.ok(reply,savedEntity);
     });
-    //TODO: Put this as separate method
 }
 //Activate Account on email confirmation 
 module.exports.handleGetEntityConfirm = function(request, reply) {
-    tokenDB.findOne(request.params.id, request.params.token, function(err,token){
+    tokenDB.findOneByEntityToken(request.params.id, request.params.token, function(err,token){
         if(err){
             return reply(Boom.badRequest(err, token)); 
         }
         var setObject =CreateUpdatedEmailConfirmedObject();
-        entityDB.Update(request.params.id, setObject, function(err,savedEntity,code){
+        DB.Update(Entity,request.params.id, setObject, function(err,savedEntity,code){
             if (err) {
                 return reply(Boom.badRequest(err,code,err.message));
             }
-            tokenDB.removeOne(request.params.id,request.params.token,function(err,token){
+            tokenDB.removeOneByEntityToken(request.params.id,request.params.token,function(err,token){
                 if(err){
                     return reply(Boom.badRequest(err,'Error'));
                 }
@@ -90,30 +89,30 @@ module.exports.handleGetPassword = function(request,reply){
 //update password _DONE
 module.exports.handlePatchEntityPassword = function(request, reply) {
     var setObject=CreateUpdatedPasswordObject(request);
-    entityDB.Update(request.params.id, setObject, function(err,savedEntity){
+    DB.Update(Entity, request.params.id, setObject, function(err,savedEntity){
         if (err) {
             return reply(Boom.badRequest(err,'Error'));
         }
-        reply(savedEntity);
+        status.ok(reply,savedEntity);
     });
 }
 //update contract status from UI
 module.exports.handlePatchContractSigned = function(request, reply) {
     var setObject=CreateUpdatedContractSignedObject();
-     entityDB.Update(request.params.id, setObject, function(err,savedEntity){
+     DB.Update(Entity, request.params.id, setObject, function(err,savedEntity){
         if (err) {
             return reply(Boom.badRequest(err,'Error'));
         }
-        reply(savedEntity);
+        status.ok(reply,savedEntity);
     });
 }
 
 module.exports.handleGetIfEmailExists =function(request,reply){
-    entityDB.findIfEntityExists(request.params.email, function(err, isExist){
+    DB.findIfDocumentExists(Entity, {"contract.email":request.params.email}, function(err, isExist){
         if(err){
             return reply(Boom.wrap(err));
         }
-        reply(isExist);
+        status.ok(reply,isExist);
     });
 }
 /* Section Helpers */

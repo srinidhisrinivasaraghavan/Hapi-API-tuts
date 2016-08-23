@@ -4,7 +4,7 @@ var Mongoose = require('mongoose'),
 var contractSchema = new Schema({
     firstName: { type: String,  required: true },
     lastName: { type: String, required: true },
-    email :{ type: String, required: true, unique: true } ,
+    email :{ type: String, required: true, unique: true} ,
     companyName:{ type: String, required: true } ,
     status:{ type: String, required: true } ,
     pdfVersion:{ type: String } ,
@@ -14,7 +14,7 @@ var contractSchema = new Schema({
 
 var entitySchema = new Schema({
     address: { type: String,  required: true },
-    password: { type: String },
+    password: { type: String,  select: false  },
     username :{ type: String, required: true } ,
     role:{ type: String, required: true } ,
     accountActivated:{ type: Boolean, required: true } ,

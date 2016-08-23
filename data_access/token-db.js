@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 var tokenDB ={
 };
 
-tokenDB.findOne = function(entityId, tokenValue, callback){
+tokenDB.findOneByEntityToken = function(entityId, tokenValue, callback){
 	Token.findOne(
     {
         entityId: mongoose.Types.ObjectId(entityId),
@@ -21,7 +21,8 @@ tokenDB.findOne = function(entityId, tokenValue, callback){
     });
 }
 
-tokenDB.removeOne = function(entityId,tokenValue,callback){
+//COMMON
+tokenDB.removeOneByEntityToken = function(entityId,tokenValue,callback){
     Token.findOneAndRemove(
         {
             entityId:entityId,

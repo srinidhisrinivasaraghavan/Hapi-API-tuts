@@ -26,6 +26,14 @@ server.route({
     	tags:["api"]
     }
 });
+
+//GET
+//find if role with roleName exists
+server.route({
+    method: 'GET',
+    path :'/role/{roleName}/exists',
+    handler: handlers.handleGetIfRoleExists
+});
 next();
 }
 
