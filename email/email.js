@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
         }
     });
 
-module.exports.sendEmail =function(subject, body, email,entityId){
+module.exports.sendEmail =function(subject, body, email, entityId, firstName){
     crypto.randomBytes(48, function(err, buffer) {
         var token = createTokenAndSave(buffer,entityId);
 
@@ -20,8 +20,8 @@ module.exports.sendEmail =function(subject, body, email,entityId){
         from: emailConfig.user, // sender 
         to: email, //  receivers
         subject: subject, // Subject 
-        text: body + token //, // plaintext body
-        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        //text: body + token //, // plaintext body
+        html: createHtmlBody(firstName,body,token) // You can choose to send an HTML body instead
         };
 
         transporter.sendMail(mailOptions, function(error, info){
@@ -56,4 +56,12 @@ function createTokenAndSave(buffer,entityId){
           
     });   
     return tokenValue;  
+}
+
+function createHtmlBody(firstName, body , token){
+    return  '<p> Hi ' + firstName + '</p>'+
+            '<p>' +body+token +'</p>' +
+            '<br />'+
+            '<p> Thanks </p>' +
+            '<p> Audible Magic Support </p>'
 }

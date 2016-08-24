@@ -17,20 +17,26 @@ DB.findAll = function(collection,callback){
 
 DB.save = function(obj,callback){
 	obj.save(obj, function(err, savedObj) {
+        if(err && err.code===11000){
+           return callback(new Error('Duplicate content'),savedObj,400); 
+        }
+        else if(err){
+            callback(err,savedObj,500);
+        }
     	return callback(err,savedObj);   
     }); 
 }
 
 DB.findIfDocumentExists = function(collection, criteria ,callback){
-    collection.count(criteria, function (err, count){
+    collection.findOne(criteria, function(err, doc) {
         if(err){
             return callback(err);
         }
-        if(count>0){
-            return callback(err,true);
+        if (!doc) {
+            return callback(err,false);
         }
-        return callback(err,false);
-    });   
+        return callback(err,true,doc._id);
+    });  
 }
 
 DB.findOne = function(collection, id, callback){
@@ -40,10 +46,10 @@ DB.findOne = function(collection, id, callback){
     }, 
     function(err, doc) {
         if(err){
-            return callback(err,doc,500);
+            return callback(err, doc, 500);
         }
         if (!doc) {
-            return callback(new Error('Missing Record'), doc,400);
+            return callback(new Error('Missing Record'), doc, 404);
         }
         return callback(err, doc);
     });
@@ -54,9 +60,9 @@ DB.Update = function(collection, id, setObject, callback){
         {
             _id: mongoose.Types.ObjectId(id)
         },
-        {
-            $set: setObject
-        },
+        
+         setObject
+        ,
         {
             upsert:false,
             new:true
@@ -66,7 +72,7 @@ DB.Update = function(collection, id, setObject, callback){
                 return callback(err,savedDoc,500);
             }
             if(!savedDoc){
-                return callback(new Error('Missing Record'),savedDoc,400);
+                return callback(new Error('Missing Record'),savedDoc,404);
             }
             return callback(err,savedDoc);
         }

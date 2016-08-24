@@ -14,9 +14,9 @@ module.exports.handleGetRoles = function (request, reply) {
 
 module.exports.handlePostRoles=function(request,reply){
     var role = new Role(request.payload);
-    DB.save(role,function(err, savedRole){
+    DB.save(role,function(err, savedRole,code){
         if(err){
-            return reply (Boom.wrap(err,500,err.message));
+            return reply (Boom.wrap(err,code,err.message));
         }
         status.created(reply,savedRole);
     });           
@@ -25,7 +25,7 @@ module.exports.handlePostRoles=function(request,reply){
 module.exports.handleGetIfRoleExists =function(request,reply){
     DB.findIfDocumentExists(Role, {"roleName":request.params.roleName}, function(err, isExist){
         if(err){
-            return reply(Boom.wrap(err,500,err.message));
+            return reply(Boom.wrap(err));
         }
         status.ok(reply,isExist);
     });

@@ -20,6 +20,7 @@ var entitySchema = new Schema({
     accountActivated:{ type: Boolean, required: true } ,
     skipContract:{ type: Boolean, required: true } ,
     dateCreated: { type: String, required: true },
+    datePasswordCreated :{type: String, select: false},
     contract : contractSchema
 });
 

@@ -29,7 +29,8 @@ module.exports.entityValidationPUT = {
 module.exports.passwordValidation = {
         validate:{
             payload:{
-                password: Joi.string().max(50).required()
+                password: Joi.string().max(50).required(),
+                token :Joi.required()
             }
         }
     }

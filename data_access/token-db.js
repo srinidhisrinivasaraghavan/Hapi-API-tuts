@@ -12,16 +12,15 @@ tokenDB.findOneByEntityToken = function(entityId, tokenValue, callback){
     },
     function(err, token) {
         if(err) {
-            return callback(err,token);
+            return callback(err,token,500);
         }
         if(!token){
-            return callback('Invalid data',token)
+            return callback(new Error('Invalid data'),token,400)
         }
         return callback(err,token);
     });
 }
 
-//COMMON
 tokenDB.removeOneByEntityToken = function(entityId,tokenValue,callback){
     Token.findOneAndRemove(
         {
@@ -30,10 +29,10 @@ tokenDB.removeOneByEntityToken = function(entityId,tokenValue,callback){
         },
         function(err,token) {
             if(err){
-                return callback(err,token);
+                return callback(err,token,500);
             }
             if(!token){
-                return callback('Invalid data',token)
+                return callback(new Error('Invalid data'),token,400);
             }  
             return callback(err,token);  
         });

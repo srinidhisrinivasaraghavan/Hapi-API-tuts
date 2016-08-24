@@ -16,7 +16,7 @@ module.exports.handleGetCompanies = function (request, reply) {
 module.exports.handleGetIfCompanyExists =function(request,reply){
     DB.findIfDocumentExists(Company, {"companyName":request.params.companyName}, function(err, isExist){
         if(err){
-            return reply(Boom.wrap(err,500,err.message));
+            return reply(Boom.wrap(err));
         }
         status.ok(reply,isExist);
     });
@@ -24,10 +24,9 @@ module.exports.handleGetIfCompanyExists =function(request,reply){
 
 module.exports.handlePostCompanies =function(request,reply){
     var company = new Company(request.payload);
-    DB.save(company,function(err, savedCompany){
+    DB.save(company,function(err, savedCompany,code){
         if(err){
-            console.log(err.message);
-            return reply (Boom.wrap(err,500,err.message));
+            return reply (Boom.wrap(err,code,err.message ));
         }
         status.created(reply,savedCompany);
     });          
