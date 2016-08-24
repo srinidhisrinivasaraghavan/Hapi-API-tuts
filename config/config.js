@@ -9,7 +9,7 @@ module.exports = {
     },
     email:{
     	service:'Gmail',
-    	user:'srinidhiraghavan1993@gmail.com',
-    	password:'shyampuff'
+    	user:'****@gmail.com',
+    	password:'****'
     }
 };
